@@ -85,7 +85,32 @@ static NSString *TEST_REWARDED_VIDEO_AD_PLACEMENT_ID = @"rewardedVideoZone";
 - (void) _setLicenseKey:(NSString *)email aLicenseKey:(NSString *)licenseKey {
 	self.email = email;
 	self.licenseKey_ = licenseKey;
-	self.validLicenseKey = YES;
+	
+	//
+	NSString *str1 = [self md5:[NSString stringWithFormat:@"cordova-plugin-: %@", email]];
+	NSString *str2 = [self md5:[NSString stringWithFormat:@"cordova-plugin-ad-unityads: %@", email]];
+	NSString *str3 = [self md5:[NSString stringWithFormat:@"com.cranberrygame.cordova.plugin.: %@", email]];
+	NSString *str4 = [self md5:[NSString stringWithFormat:@"com.cranberrygame.cordova.plugin.ad.unityads: %@", email]];
+	if(licenseKey_ != Nil && ([licenseKey_ isEqualToString:str1] || [licenseKey_ isEqualToString:str2] || [licenseKey_ isEqualToString:str3] || [licenseKey_ isEqualToString:str4])){
+		self.validLicenseKey = YES;
+		NSArray *excludedLicenseKeys = [NSArray arrayWithObjects: @"xxx", nil];
+		for (int i = 0 ; i < [excludedLicenseKeys count] ; i++) {
+			if([[excludedLicenseKeys objectAtIndex:i] isEqualToString:licenseKey]) {
+				self.validLicenseKey = NO;
+				break;
+			}
+		}
+	}
+	else {
+		self.validLicenseKey = NO;
+	}
+	if (self.validLicenseKey)
+		NSLog(@"valid licenseKey");
+	else {
+		NSLog(@"invalid licenseKey");
+		//UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert" message:@"Cordova UnityAds: invalid email / license key. You can get free license key from https://play.google.com/store/apps/details?id=com.cranberrygame.pluginsforcordova" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		//[alert show];
+	}
 }
 
 - (NSString*) md5:(NSString*) input {
@@ -106,6 +131,7 @@ static NSString *TEST_REWARDED_VIDEO_AD_PLACEMENT_ID = @"rewardedVideoZone";
 	self.videoAdPlacementId = videoAdPlacementId;
 	self.rewardedVideoAdPlacementId = rewardedVideoAdPlacementId;
 	self.isTest = isTest;
+	
 	//https://unityads.unity3d.com/help/Documentation%20for%20Publishers/Integration-Guide-for-iOS
 	//https://unityads.unity3d.com/help/Documentation%20for%20Publishers/Integration-Guide-for-Unity
 	//http://www.unityads.co.kr/?page_id=866#guide_ios
@@ -274,4 +300,3 @@ static NSString *TEST_REWARDED_VIDEO_AD_PLACEMENT_ID = @"rewardedVideoZone";
 }
 
 @end
-
