@@ -4,7 +4,7 @@
     id="twm-cordova-plugin-ad-unityads"
     version="1.0.0">
 	
-    <name>tTWM Cordova UnityAds plugin</name>
+    <name>TWM Cordova UnityAds plugin</name>
     <description>Show unityads video ad and rewarded video ad</description>
     <author>Sang Ki Kwon (Cranberrygame) / km twm</author>	
     <license>MIT</license>
